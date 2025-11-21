@@ -1,0 +1,362 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4 mb-4">Welcome to Contract Monthly Claim System</h1>
+    <p class="lead mb-5">Streamlining the claim submission and approval process for academic staff</p>
+
+    @if (User.Identity?.IsAuthenticated == true)
+    {
+        <div class="row mt-5">
+            <div class="col-md-10 mx-auto">
+                <div class="card">
+                    <div class="card-body">
+                        <h3>Welcome, @User.Identity.Name!</h3>
+                        <p class="lead">
+                            You are logged in as:
+                            @{
+                                var userRoles = User.Claims.Where(c => c.Type.Contains("role")).Select(c => c.Value);
+                                var rolesList = userRoles.Any() ? string.Join(", ", userRoles) : "User";
+                            }
+                            <strong>@rolesList</strong>
+                        </p>
+
+                        <!-- Demo Data Overview -->
+                        <div class="alert alert-info mt-4">
+                            <h5><i class="bi bi-info-circle"></i> Prototype Demo Data</h5>
+                            <p class="mb-2">This system contains comprehensive sample claims for demonstration:</p>
+                            <div class="row text-start">
+                                <div class="col-md-6">
+                                    <ul class="list-unstyled mb-0">
+                                        <li>✅ <strong>3 Pending claims</strong> waiting for review</li>
+                                        <li>✅ <strong>4 Approved claims</strong> showing completed workflow</li>
+                                        <li>✅ <strong>3 Rejected claims</strong> with detailed rejection reasons</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6">
+                                    <ul class="list-unstyled mb-0">
+                                        <li>✅ <strong>Sample documents</strong> for download testing</li>
+                                        <li>✅ <strong>Multiple departments</strong> and lecturers</li>
+                                        <li>✅ <strong>Realistic amounts</strong> and scenarios</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-4">
+                            @if (User.IsInRole("Lecturer"))
+                            {
+                                <div class="col-md-6 mb-3">
+                                    <div class="card bg-primary text-white h-100">
+                                        <div class="card-body d-flex flex-column">
+                                            <h5><i class="bi bi-plus-circle"></i> Submit Claim</h5>
+                                            <p>Submit your monthly teaching claim with supporting documents</p>
+                                            <div class="mt-auto">
+                                                <a asp-controller="Claims" asp-action="Submit" class="btn btn-light">Go to Submit</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+                            @if (User.IsInRole("Coordinator") || User.IsInRole("Manager"))
+                            {
+                                <div class="col-md-6 mb-3">
+                                    <div class="card bg-warning text-dark h-100">
+                                        <div class="card-body d-flex flex-column">
+                                            <h5><i class="bi bi-eye"></i> Review Claims</h5>
+                                            <p>Review and approve/reject pending claims</p>
+                                            <p class="mb-2"><strong>📋 3 claims waiting for review</strong></p>
+                                            <div class="mt-auto">
+                                                <a asp-controller="Claims" asp-action="Review" class="btn btn-dark">Go to Review</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+                            <div class="col-md-6 mb-3">
+                                <div class="card bg-info text-white h-100">
+                                    <div class="card-body d-flex flex-column">
+                                        <h5><i class="bi bi-graph-up"></i> Track Status</h5>
+                                        <p>Track claims status with real-time progress visualization</p>
+                                        <p class="mb-2"><strong>📊 View all 10 sample claims</strong></p>
+                                        <div class="mt-auto">
+                                            <a asp-controller="Claims" asp-action="Track" class="btn btn-light">Go to Tracking</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            @if (User.IsInRole("Coordinator") || User.IsInRole("Manager") || User.IsInRole("HR") || User.IsInRole("Admin"))
+                            {
+                                <div class="col-md-6 mb-3">
+                                    <div class="card bg-success text-white h-100">
+                                        <div class="card-body d-flex flex-column">
+                                            <h5><i class="bi bi-gear"></i> Manage Claims</h5>
+                                            <p>Complete management of all claims in the system</p>
+                                            <p class="mb-2"><strong>🗂️ 10 total sample claims</strong></p>
+                                            <div class="mt-auto">
+                                                <a asp-controller="Claims" asp-action="Manage" class="btn btn-light">Go to Management</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+
+                        <!-- Quick Stats -->
+                        <div class="row mt-4">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h6 class="mb-0">📈 System Overview</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row text-center">
+                                            <div class="col-md-3">
+                                                <h4 class="text-primary">10</h4>
+                                                <small class="text-muted">Total Claims</small>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <h4 class="text-warning">3</h4>
+                                                <small class="text-muted">Pending</small>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <h4 class="text-success">4</h4>
+                                                <small class="text-muted">Approved</small>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <h4 class="text-danger">3</h4>
+                                                <small class="text-muted">Rejected</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row mt-5">
+            <div class="col-md-10 mx-auto">
+                <div class="card">
+                    <div class="card-body">
+                        <h3>Get Started with the Demo</h3>
+                        <p class="lead">Login with demo accounts to explore the system features</p>
+
+                        <!-- Demo System Overview -->
+                        <div class="alert alert-success mb-4">
+                            <h5><i class="bi bi-rocket"></i> Prototype Features Demonstration</h5>
+                            <div class="row text-start">
+                                <div class="col-md-6">
+                                    <ul class="mb-0">
+                                        <li>✅ <strong>Role-based access control</strong></li>
+                                        <li>✅ <strong>Claim submission</strong> with file upload</li>
+                                        <li>✅ <strong>Approval workflow</strong> system</li>
+                                        <li>✅ <strong>Real-time status tracking</strong></li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-6">
+                                    <ul class="mb-0">
+                                        <li>✅ <strong>Document management</strong></li>
+                                        <li>✅ <strong>Comprehensive reporting</strong></li>
+                                        <li>✅ <strong>Sample data</strong> for testing</li>
+                                        <li>✅ <strong>Responsive design</strong></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-4">
+                            <div class="col-md-4 mb-3">
+                                <div class="card bg-success text-white h-100">
+                                    <div class="card-body d-flex flex-column">
+                                        <h5><i class="bi bi-person-plus"></i> Register</h5>
+                                        <p>Create a new account with different roles</p>
+                                        <div class="mt-auto">
+                                            <a asp-controller="Account" asp-action="Register" class="btn btn-light">Register</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <div class="card bg-primary text-white h-100">
+                                    <div class="card-body d-flex flex-column">
+                                        <h5><i class="bi bi-box-arrow-in-right"></i> Login</h5>
+                                        <p>Access the system with demo accounts</p>
+                                        <div class="mt-auto">
+                                            <a asp-controller="Account" asp-action="Login" class="btn btn-light">Login</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <div class="card bg-info text-white h-100">
+                                    <div class="card-body d-flex flex-column">
+                                        <h5><i class="bi bi-eye"></i> Demo Preview</h5>
+                                        <p>View sample data and features overview</p>
+                                        <div class="mt-auto">
+                                            <a href="#" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#demoModal">View Demo</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <h5>Demo Accounts - Try Different Roles:</h5>
+                            <div class="row text-start mt-3">
+                                <div class="col-md-4 mb-3">
+                                    <div class="card h-100">
+                                        <div class="card-body">
+                                            <h6><i class="bi bi-person-check"></i> 👨‍🏫 Lecturer</h6>
+                                            <div class="mt-2">
+                                                <strong>Email:</strong> lecturer@cmcs.com<br>
+                                                <strong>Password:</strong> Password123!
+                                            </div>
+                                            <small class="text-muted">
+                                                <i class="bi bi-check-circle"></i> Submit claims<br>
+                                                <i class="bi bi-check-circle"></i> Track status<br>
+                                                <i class="bi bi-check-circle"></i> Upload documents
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <div class="card h-100">
+                                        <div class="card-body">
+                                            <h6><i class="bi bi-shield-check"></i> 👩‍💼 Coordinator</h6>
+                                            <div class="mt-2">
+                                                <strong>Email:</strong> coordinator@cmcs.com<br>
+                                                <strong>Password:</strong> Password123!
+                                            </div>
+                                            <small class="text-muted">
+                                                <i class="bi bi-check-circle"></i> Review claims<br>
+                                                <i class="bi bi-check-circle"></i> Approve/Reject<br>
+                                                <i class="bi bi-check-circle"></i> Manage workflow
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <div class="card h-100">
+                                        <div class="card-body">
+                                            <h6><i class="bi bi-gear"></i> 👨‍💼 Manager</h6>
+                                            <div class="mt-2">
+                                                <strong>Email:</strong> manager@cmcs.com<br>
+                                                <strong>Password:</strong> Password123!
+                                            </div>
+                                            <small class="text-muted">
+                                                <i class="bi bi-check-circle"></i> Full system access<br>
+                                                <i class="bi bi-check-circle"></i> All management features<br>
+                                                <i class="bi bi-check-circle"></i> Complete oversight
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quick Feature Highlights -->
+                        <div class="row mt-4">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h6 class="mb-0">🚀 What You Can Test</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row text-center">
+                                            <div class="col-md-3 mb-3">
+                                                <i class="bi bi-upload" style="font-size: 2rem;"></i>
+                                                <h6>File Upload</h6>
+                                                <small>Test PDF, DOCX, XLSX uploads</small>
+                                            </div>
+                                            <div class="col-md-3 mb-3">
+                                                <i class="bi bi-check2-circle" style="font-size: 2rem;"></i>
+                                                <h6>Approval Workflow</h6>
+                                                <small>Approve/Reject with reasons</small>
+                                            </div>
+                                            <div class="col-md-3 mb-3">
+                                                <i class="bi bi-graph-up" style="font-size: 2rem;"></i>
+                                                <h6>Status Tracking</h6>
+                                                <small>Real-time progress visualization</small>
+                                            </div>
+                                            <div class="col-md-3 mb-3">
+                                                <i class="bi bi-shield-lock" style="font-size: 2rem;"></i>
+                                                <h6>Role Security</h6>
+                                                <small>Different access per role</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Demo Modal -->
+        <div class="modal fade" id="demoModal" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">🎯 System Demo Preview</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <h6>📊 Comprehensive Sample Data Included:</h6>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <ul>
+                                    <li><strong>10 Sample Claims</strong> total</li>
+                                    <li>✅ 3 Pending for review</li>
+                                    <li>✅ 4 Approved claims</li>
+                                    <li>✅ 3 Rejected with detailed reasons</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <ul>
+                                    <li>✅ Multiple departments</li>
+                                    <li>✅ Various claim amounts (R15K - R30K)</li>
+                                    <li>✅ Sample documents for testing</li>
+                                    <li>✅ Realistic academic scenarios</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="alert alert-info mt-3">
+                            <h6>💡 Recommended Testing Flow:</h6>
+                            <ol class="mb-0">
+                                <li><strong>Start as Lecturer</strong> - Submit claims and track status</li>
+                                <li><strong>Switch to Coordinator</strong> - Review and approve/reject pending claims</li>
+                                <li><strong>Try as Manager</strong> - Full system access and management</li>
+                            </ol>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <a asp-controller="Account" asp-action="Login" class="btn btn-primary">Login to Explore</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<style>
+    .card {
+        transition: transform 0.2s;
+    }
+    .card:hover {
+        transform: translateY(-2px);
+    }
+</style>

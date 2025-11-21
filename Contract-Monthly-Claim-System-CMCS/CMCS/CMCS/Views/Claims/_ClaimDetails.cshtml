@@ -1,0 +1,71 @@
+@model CMCS.Models.MonthlyClaim
+
+<dl class="row">
+    <dt class="col-sm-4">Claim ID:</dt>
+    <dd class="col-sm-8">@Model.Id</dd>
+
+    <dt class="col-sm-4">Lecturer ID:</dt>
+    <dd class="col-sm-8">@Model.LecturerId</dd>
+
+    <dt class="col-sm-4">Full Name:</dt>
+    <dd class="col-sm-8">@Model.FullName</dd>
+
+    <dt class="col-sm-4">Department:</dt>
+    <dd class="col-sm-8">@Model.Department</dd>
+
+    <dt class="col-sm-4">Claim Month:</dt>
+    <dd class="col-sm-8">@Model.ClaimMonth.ToString("yyyy-MM")</dd>
+
+    <dt class="col-sm-4">Hours Worked:</dt>
+    <dd class="col-sm-8">@Model.HoursWorked</dd>
+
+    <dt class="col-sm-4">Hourly Rate:</dt>
+    <dd class="col-sm-8">R@(Model.HourlyRate.ToString("F2"))</dd>
+
+    <dt class="col-sm-4">Total Amount:</dt>
+    <dd class="col-sm-8"><strong>R@(Model.TotalAmount.ToString("F2"))</strong></dd>
+
+    <dt class="col-sm-4">Status:</dt>
+    <dd class="col-sm-8">
+        <span class="badge bg-@Model.StatusColor">@Model.Status</span>
+    </dd>
+
+    <dt class="col-sm-4">Submission Date:</dt>
+    <dd class="col-sm-8">@Model.SubmissionDate.ToString("yyyy-MM-dd HH:mm")</dd>
+
+    @if (!string.IsNullOrEmpty(Model.Notes))
+    {
+        <dt class="col-sm-4">Notes:</dt>
+        <dd class="col-sm-8">@Model.Notes</dd>
+    }
+
+    @if (Model.ApprovalDate.HasValue)
+    {
+        <dt class="col-sm-4">Approval Date:</dt>
+        <dd class="col-sm-8">@Model.ApprovalDate.Value.ToString("yyyy-MM-dd HH:mm")</dd>
+
+        <dt class="col-sm-4">Approved By:</dt>
+        <dd class="col-sm-8">@Model.ApprovedBy</dd>
+    }
+
+    @if (Model.Status == "Rejected" && !string.IsNullOrEmpty(Model.RejectionReason))
+    {
+        <dt class="col-sm-4">Rejection Reason:</dt>
+        <dd class="col-sm-8">
+            <div class="alert alert-danger mb-0">
+                @Model.RejectionReason
+            </div>
+        </dd>
+    }
+
+    @if (!string.IsNullOrEmpty(Model.FileName))
+    {
+        <dt class="col-sm-4">Supporting Document:</dt>
+        <dd class="col-sm-8">
+            <a asp-controller="Claims" asp-action="DownloadDocument" asp-route-id="@Model.Id"
+               class="btn btn-sm btn-outline-primary">
+                <i class="bi bi-download"></i> @Model.FileName
+            </a>
+        </dd>
+    }
+</dl>
