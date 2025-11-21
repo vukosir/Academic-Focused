@@ -1,0 +1,248 @@
+@model List<CMCS.Models.MonthlyClaim>
+@{
+    ViewData["Title"] = "Review Claims";
+}
+
+<div class="container-fluid">
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+            <li class="breadcrumb-item active">Review Claims</li>
+        </ol>
+    </nav>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>
+            <i class="bi bi-eye"></i> Pending Claims Review
+        </h2>
+        <div>
+            <a asp-action="Track" class="btn btn-outline-info me-2">
+                <i class="bi bi-graph-up"></i> View Status Tracking
+            </a>
+            <a asp-action="Manage" class="btn btn-outline-primary">
+                <i class="bi bi-gear"></i> Manage All Claims
+            </a>
+        </div>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info text-center">
+            <h4 class="alert-heading">
+                <i class="bi bi-inbox"></i> No Pending Claims
+            </h4>
+            <p class="mb-0">There are currently no claims waiting for review.</p>
+        </div>
+    }
+    else
+    {
+        <div class="card shadow-sm">
+            <div class="card-header bg-warning text-dark">
+                <h5 class="card-title mb-0">
+                    <i class="bi bi-clock-history"></i> @Model.Count Pending Claim@(Model.Count == 1 ? "" : "s")
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Lecturer ID</th>
+                                <th>Name</th>
+                                <th>Department</th>
+                                <th>Hours</th>
+                                <th>Rate</th>
+                                <th>Total</th>
+                                <th>Claim Month</th>
+                                <th>Document</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var claim in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <strong>@claim.LecturerId</strong>
+                                    </td>
+                                    <td>@claim.FullName</td>
+                                    <td>@claim.Department</td>
+                                    <td>@claim.HoursWorked</td>
+                                    <td>R@(claim.HourlyRate.ToString("F2"))</td>
+                                    <td><strong>R@(claim.TotalAmount.ToString("F2"))</strong></td>
+                                    <td>@claim.ClaimMonth.ToString("MMM yyyy")</td>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(claim.FileName))
+                                        {
+                                            <a asp-action="DownloadDocument" asp-route-id="@claim.Id"
+                                               class="btn btn-sm btn-outline-primary">
+                                                <i class="bi bi-download"></i> @claim.FileName
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">
+                                                <i class="bi bi-file-x"></i> No document
+                                            </span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm">
+                                            <form asp-action="Approve" method="post" class="d-inline">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="id" value="@claim.Id" />
+                                                <button type="submit" class="btn btn-success"
+                                                        onclick="return confirm('Approve claim from @claim.FullName?')">
+                                                    <i class="bi bi-check-lg"></i> Approve
+                                                </button>
+                                            </form>
+                                            <button type="button" class="btn btn-danger"
+                                                    onclick="showRejectModal(@claim.Id, '@claim.FullName.Replace("'", "\\'")')">
+                                                <i class="bi bi-x-lg"></i> Reject
+                                            </button>
+                                            <button type="button" class="btn btn-info"
+                                                    onclick="showDetailsModal(@claim.Id)">
+                                                <i class="bi bi-info-circle"></i> Details
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<!-- Single Reject Modal -->
+<div class="modal fade" id="rejectModal" tabindex="-1" aria-labelledby="rejectModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="rejectModalLabel">
+                    <i class="bi bi-x-circle text-danger"></i> Reject Claim
+                </h5>
+                <button type="button" class="btn-close" onclick="closeRejectModal()"></button>
+            </div>
+            <form id="rejectForm" asp-action="Reject" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" id="rejectClaimId" name="id" value="" />
+                <div class="modal-body">
+                    <p id="rejectMessage">Reject claim from <strong></strong>?</p>
+                    <div class="mb-3">
+                        <label class="form-label">Rejection Reason <span class="text-danger">*</span></label>
+                        <textarea name="rejectionReason" class="form-control" rows="3"
+                                  placeholder="Please provide a detailed reason for rejection..."
+                                  required maxlength="500"></textarea>
+                        <div class="form-text">This reason will be visible to the lecturer.</div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeRejectModal()">Cancel</button>
+                    <button type="submit" class="btn btn-danger">
+                        <i class="bi bi-x-lg"></i> Confirm Reject
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Single Details Modal -->
+<div class="modal fade" id="detailsModal" tabindex="-1" aria-labelledby="detailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="detailsModalLabel">
+                    <i class="bi bi-info-circle"></i> Claim Details
+                </h5>
+                <button type="button" class="btn-close" onclick="closeDetailsModal()"></button>
+            </div>
+            <div class="modal-body" id="detailsModalBody">
+                <div class="text-center">
+                    <div class="spinner-border" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p>Loading claim details...</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeDetailsModal()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Reject Modal Functions
+        function showRejectModal(claimId, fullName) {
+            document.getElementById('rejectClaimId').value = claimId;
+            document.getElementById('rejectMessage').innerHTML = 'Reject claim from <strong>' + fullName + '</strong>?';
+            document.querySelector('#rejectForm textarea[name="rejectionReason"]').value = '';
+
+            var modal = new bootstrap.Modal(document.getElementById('rejectModal'));
+            modal.show();
+        }
+
+        function closeRejectModal() {
+            var modal = bootstrap.Modal.getInstance(document.getElementById('rejectModal'));
+            if (modal) {
+                modal.hide();
+            }
+        }
+
+        // Details Modal Functions
+        function showDetailsModal(claimId) {
+            fetch('@Url.Action("Details", "Claims")' + '?id=' + claimId)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.text();
+                })
+                .then(html => {
+                    document.getElementById('detailsModalBody').innerHTML = html;
+                    var modal = new bootstrap.Modal(document.getElementById('detailsModal'));
+                    modal.show();
+                })
+                .catch(error => {
+                    document.getElementById('detailsModalBody').innerHTML =
+                        '<div class="alert alert-danger">Error loading claim details: ' + error.message + '</div>';
+                    var modal = new bootstrap.Modal(document.getElementById('detailsModal'));
+                    modal.show();
+                });
+        }
+
+        function closeDetailsModal() {
+            var modal = bootstrap.Modal.getInstance(document.getElementById('detailsModal'));
+            if (modal) {
+                modal.hide();
+            }
+        }
+
+        // Close modals when clicking outside or pressing Escape
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('rejectModal').addEventListener('click', function(event) {
+                if (event.target === this) {
+                    closeRejectModal();
+                }
+            });
+
+            document.getElementById('detailsModal').addEventListener('click', function(event) {
+                if (event.target === this) {
+                    closeDetailsModal();
+                }
+            });
+
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape') {
+                    closeRejectModal();
+                    closeDetailsModal();
+                }
+            });
+        });
+    </script>
+}

@@ -1,0 +1,179 @@
+@model CMCS.Models.MonthlyClaim
+@{
+    ViewData["Title"] = "Submit Claim";
+}
+
+<div class="container-fluid">
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+            <li class="breadcrumb-item active">Submit Claim</li>
+        </ol>
+    </nav>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="card-title mb-0">
+                        <i class="bi bi-file-earmark-plus"></i> Submit Monthly Claim
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Submit" enctype="multipart/form-data" method="post" id="claimForm">
+                        @Html.AntiForgeryToken()
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label asp-for="LecturerId" class="form-label"></label>
+                                <input asp-for="LecturerId" class="form-control" placeholder="Enter your lecturer ID" />
+                                <span asp-validation-for="LecturerId" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="FullName" class="form-label"></label>
+                                <input asp-for="FullName" class="form-control" placeholder="Enter your full name" />
+                                <span asp-validation-for="FullName" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label asp-for="Department" class="form-label"></label>
+                                <select asp-for="Department" class="form-select">
+                                    <option value="">Select Department</option>
+                                    <option value="Computer Science">Computer Science</option>
+                                    <option value="Mathematics">Mathematics</option>
+                                    <option value="Physics">Physics</option>
+                                    <option value="Chemistry">Chemistry</option>
+                                    <option value="Biology">Biology</option>
+                                    <option value="Engineering">Engineering</option>
+                                </select>
+                                <span asp-validation-for="Department" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="ClaimMonth" class="form-label"></label>
+                                <input asp-for="ClaimMonth" type="month" class="form-control" />
+                                <span asp-validation-for="ClaimMonth" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label asp-for="HoursWorked" class="form-label"></label>
+                                <input asp-for="HoursWorked" class="form-control" id="hoursWorked"
+                                       min="0.1" max="1000" step="0.1" />
+                                <span asp-validation-for="HoursWorked" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-4">
+                                <label asp-for="HourlyRate" class="form-label"></label>
+                                <div class="input-group">
+                                    <span class="input-group-text">R</span>
+                                    <input asp-for="HourlyRate" class="form-control" id="hourlyRate"
+                                           min="0.1" max="10000" step="0.01" />
+                                </div>
+                                <span asp-validation-for="HourlyRate" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Total Amount</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">R</span>
+                                    <input type="text" class="form-control fw-bold text-success"
+                                           id="totalAmount" value="0.00" readonly />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Notes" class="form-label"></label>
+                            <textarea asp-for="Notes" class="form-control" rows="3"
+                                      placeholder="Enter any additional notes (e.g., specific tasks, workshops, special circumstances)..."
+                                      maxlength="500"></textarea>
+                            <div class="form-text">
+                                <span id="notesCounter">0</span>/500 characters
+                            </div>
+                            <span asp-validation-for="Notes" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">Supporting Document</label>
+                            <input type="file" name="supportingDocument" class="form-control" id="fileInput"
+                                   accept=".pdf,.docx,.xlsx" />
+                            <div class="form-text">
+                                <i class="bi bi-info-circle"></i> Allowed formats: PDF, DOCX, XLSX (Maximum file size: 5MB)
+                            </div>
+                            <span class="text-danger" id="fileError"></span>
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <button type="reset" class="btn btn-outline-secondary me-md-2">
+                                <i class="bi bi-arrow-clockwise"></i> Clear Form
+                            </button>
+                            <button type="submit" class="btn btn-primary" id="submitBtn">
+                                <i class="bi bi-send-check"></i> Submit Claim
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function calculateTotal() {
+            const hours = parseFloat(document.getElementById('hoursWorked').value) || 0;
+            const rate = parseFloat(document.getElementById('hourlyRate').value) || 0;
+            const total = hours * rate;
+            document.getElementById('totalAmount').value = total.toFixed(2);
+        }
+
+        function updateNotesCounter() {
+            const notes = document.getElementById('Notes');
+            const counter = document.getElementById('notesCounter');
+            counter.textContent = notes.value.length;
+        }
+
+        // Event listeners
+        document.getElementById('hoursWorked').addEventListener('input', calculateTotal);
+        document.getElementById('hourlyRate').addEventListener('input', calculateTotal);
+        document.getElementById('Notes').addEventListener('input', updateNotesCounter);
+
+        // File validation
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            const fileError = document.getElementById('fileError');
+
+            if (file) {
+                const allowedTypes = [
+                    'application/pdf',
+                    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                ];
+
+                if (!allowedTypes.includes(file.type)) {
+                    fileError.textContent = 'Invalid file type. Please select PDF, DOCX, or XLSX.';
+                    e.target.value = '';
+                } else if (file.size > 5 * 1024 * 1024) {
+                    fileError.textContent = 'File size exceeds 5MB limit.';
+                    e.target.value = '';
+                } else {
+                    fileError.textContent = '';
+                }
+            } else {
+                fileError.textContent = '';
+            }
+        });
+
+        // Form submission enhancement
+        document.getElementById('claimForm').addEventListener('submit', function(e) {
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="bi bi-hourglass-split"></i> Submitting...';
+        });
+
+        // Initial calculations
+        calculateTotal();
+        updateNotesCounter();
+    </script>
+}
