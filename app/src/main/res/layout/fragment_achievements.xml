@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/off_white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Achievements"
+            android:textSize="22sp"
+            android:textColor="@color/ink"
+            android:fontFamily="serif"
+            android:layout_marginBottom="16dp" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="16dp"
+            app:strokeColor="@color/border"
+            app:strokeWidth="1dp"
+            app:cardElevation="0dp"
+            app:cardBackgroundColor="@color/white">
+
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="20dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="BUDGET TRACKER REWARDS" style="@style/SectionTitle" android:layout_marginBottom="14dp"/>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerBadges"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    app:spanCount="2" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="16dp"
+            app:strokeColor="@color/border"
+            app:strokeWidth="1dp"
+            app:cardElevation="0dp"
+            app:cardBackgroundColor="@color/white">
+
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="20dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="YOUR PROGRESS SCORE" style="@style/SectionTitle" android:layout_marginBottom="14dp"/>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="8dp">
+                    <TextView android:id="@+id/tvProgress" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:textSize="13sp" android:textColor="@color/ink" android:fontFamily="sans-serif-medium"/>
+                    <TextView android:id="@+id/tvProgressPct" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="20sp" android:textColor="@color/ink" android:fontFamily="serif"/>
+                </LinearLayout>
+
+                <ProgressBar
+                    android:id="@+id/progressScore"
+                    style="@android:style/Widget.ProgressBar.Horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:max="100"
+                    android:progressTint="@color/ink"
+                    android:progressBackgroundTint="@color/surface"/>
+
+                <TextView
+                    android:id="@+id/tvProgressHint"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="11sp"
+                    android:textColor="@color/ink_4" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
+</ScrollView>
