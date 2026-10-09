@@ -2,18 +2,31 @@
 
 A web version of the HP 12C financial calculator. It keeps the real calculator's RPN logic, the four-level stack, and the gold `f` and blue `g` shift keys, and runs entirely in the browser. Built with React, TypeScript and Vite, in the same style as Skyline Weather.
 
-The original Windows (WPF) project is still in the parent folder, untouched. This folder replaces it as the maintained version.
+**Live app:** https://hp12c-calculator.netlify.app/
+
+This replaces the earlier Windows (WPF) version of this project.
+
+## How it is published
+
+The site is hosted on Netlify as plain static files. There is no server and nothing to configure.
+
+To publish a change:
+
+1. Run `npm run build` in this folder. It writes the site to `dist/`.
+2. In Netlify, open the site, go to **Deploys**, and drag the `dist` folder onto the page.
+
+The built site uses relative paths, so the same `dist/` also works on GitHub Pages or any other static host.
 
 ## Run it
 
 You need Node.js 22.12 or newer. In this folder:
 
-```bash
-npm install
-npm run dev
-```
+    npm install
+    npm run dev
 
 Then open http://localhost:5174.
+
+On Windows PowerShell, if you see "running scripts is disabled", use `npm.cmd` instead of `npm`.
 
 | Command | What it does |
 | --- | --- |
@@ -22,8 +35,6 @@ Then open http://localhost:5174.
 | `npm run preview` | Serves the production build on port 4174. |
 | `npm test` | Runs the test suite once. |
 | `npm run typecheck` | Type-checks without building. |
-
-`dist/` is static files with relative paths, so it can be hosted anywhere: GitHub Pages, Netlify, or a sub-folder of another site.
 
 ## What it does
 
@@ -63,18 +74,16 @@ The programming keys: R/S, SST, BST, GTO, P/R, PSE, x≤y, x=0, and MEM. They ar
 
 ## Project structure
 
-```
-src/
-  engine/       Pure logic with no DOM, fully unit tested
-    calc.ts       The state machine: press(state, key) -> state
-    keys.ts       The keypad: main, gold and blue action for every key
-    finance.ts    TVM solvers, cash flows, depreciation, bonds
-    dates.ts      Date parsing, day counts, weekdays
-    format.ts     Number formatting and the typing buffer
-  components/   Display, Keypad, side panel (tape, registers, guide)
-  storage.ts    Saved state and theme, validated on load
-  App.tsx       Layout, keyboard handling
-```
+    src/
+      engine/       Pure logic with no DOM, fully unit tested
+        calc.ts       The state machine: press(state, key) -> state
+        keys.ts       The keypad: main, gold and blue action for every key
+        finance.ts    TVM solvers, cash flows, depreciation, bonds
+        dates.ts      Date parsing, day counts, weekdays
+        format.ts     Number formatting and the typing buffer
+      components/   Display, Keypad, side panel (tape, registers, guide)
+      storage.ts    Saved state and theme, validated on load
+      App.tsx       Layout, keyboard handling
 
 State is saved in `localStorage` on this device only. Corrupted saved data is ignored and the calculator starts fresh.
 
