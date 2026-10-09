@@ -1,0 +1,1496 @@
+/* Component styles, grouped in the order the components appear on the page. */
+
+/* ---------- Buttons ---------- */
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  padding: 0 18px;
+  border: 1px solid var(--ctl-border);
+  border-radius: var(--radius-pill);
+  background: var(--ctl-bg);
+  color: var(--ctl-fg);
+  font-weight: 600;
+  white-space: nowrap;
+  transition:
+    background-color 0.15s ease,
+    transform 0.1s ease;
+}
+
+.button:hover:not(:disabled) {
+  background: var(--ctl-bg-hover);
+}
+
+.button:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.button:disabled {
+  opacity: 0.65;
+}
+
+.button--primary {
+  border-color: transparent;
+  background: var(--ctl-solid-bg);
+  color: var(--ctl-solid-fg);
+}
+
+.button--primary:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--ctl-solid-bg) 88%, var(--ctl-solid-fg));
+}
+
+.button--ghost {
+  background: transparent;
+}
+
+.button--quiet {
+  min-height: 36px;
+  padding: 0 14px;
+  font-size: var(--text-s);
+}
+
+.icon-button {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 46px;
+  height: 46px;
+  border: 1px solid var(--ctl-border);
+  border-radius: 50%;
+  background: var(--ctl-bg);
+  color: var(--ctl-fg);
+  transition: background-color 0.15s ease;
+}
+
+.icon-button:hover:not(:disabled) {
+  background: var(--ctl-bg-hover);
+}
+
+.icon-button:disabled {
+  opacity: 0.6;
+}
+
+.link-button {
+  padding: 4px 2px;
+  border: 0;
+  background: none;
+  color: var(--accent);
+  font-size: var(--text-s);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ---------- Segmented control ---------- */
+
+.segmented {
+  display: inline-flex;
+  padding: 3px;
+  border: 1px solid var(--ctl-border);
+  border-radius: var(--radius-pill);
+  background: var(--ctl-bg);
+}
+
+.segmented__option {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-width: 40px;
+  height: 38px;
+  padding: 0 10px;
+  border-radius: var(--radius-pill);
+  color: var(--ctl-fg);
+  font-size: var(--text-s);
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
+}
+
+/* The radio stays in the accessibility tree and covers the whole option. */
+.segmented__option input {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.segmented__option:has(input:checked) {
+  background: var(--ctl-solid-bg);
+  color: var(--ctl-solid-fg);
+}
+
+.segmented__option:has(input:focus-visible) {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+@media (max-width: 420px) {
+  .segmented__option {
+    min-width: 34px;
+    padding: 0 8px;
+  }
+}
+
+/* ---------- Search ---------- */
+
+.search {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  /* The field and its popup are solid surfaces, so they use sheet colours. */
+  --focus: var(--accent);
+}
+
+.search__field {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 46px;
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: 0 6px 20px -8px rgb(4 12 30 / 0.45);
+}
+
+.search__field:focus-within {
+  outline: 2px solid var(--sky-ink);
+  outline-offset: 2px;
+}
+
+.search__icon {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  color: var(--ink-3);
+}
+
+.search__input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  padding: 0 var(--space-2) 0 0;
+  border: 0;
+  background: none;
+  /* 16px stops iOS from zooming the page when the field is focused. */
+  font-size: 1rem;
+  outline: none;
+}
+
+.search__input::placeholder {
+  color: var(--ink-3);
+  opacity: 1;
+}
+
+.search__clear {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  margin-right: 5px;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: var(--ink-2);
+}
+
+.search__clear:hover {
+  background: var(--surface-sunk);
+}
+
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+.search__popup {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  z-index: 30;
+  padding: var(--space-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: var(--shadow-pop);
+  animation: pop-in 0.14s var(--ease-out);
+}
+
+.search__popup-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 10px 6px;
+  color: var(--ink-2);
+  font-size: var(--text-s);
+  font-weight: 600;
+}
+
+.search__option {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 48px;
+  padding: 6px 10px;
+  border-radius: var(--radius-s);
+  cursor: pointer;
+}
+
+.search__option.is-active {
+  background: var(--surface-sunk);
+  box-shadow: inset 3px 0 0 var(--accent);
+}
+
+.search__option-icon {
+  color: var(--ink-3);
+}
+
+.search__option-text {
+  display: grid;
+  min-width: 0;
+  line-height: 1.3;
+}
+
+.search__option-name {
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.search__option-context {
+  color: var(--ink-2);
+  font-size: var(--text-s);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.search__message {
+  padding: 12px 10px;
+  color: var(--ink-2);
+}
+
+/* Floats under the field like the suggestions do, so the page does not jump. */
+.search__error {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  z-index: 25;
+  display: grid;
+  justify-items: start;
+  gap: 2px;
+  padding: 12px 44px 12px 16px;
+  border-radius: var(--radius-m);
+  border-left: 4px solid var(--danger);
+  background: var(--surface);
+  color: var(--ink-2);
+  font-size: var(--text-s);
+  box-shadow: 0 6px 20px -8px rgb(4 12 30 / 0.45);
+}
+
+.search__error-close {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: var(--ink-2);
+}
+
+.search__error-close:hover {
+  background: var(--surface-sunk);
+}
+
+.search__error-title {
+  color: var(--ink);
+  font-size: var(--text-m);
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+/* ---------- Favorite chips ---------- */
+
+.chip {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  border: 1px solid var(--ctl-border);
+  border-radius: var(--radius-pill);
+  background: var(--ctl-bg);
+  color: var(--ctl-fg);
+}
+
+.chip--current {
+  border-color: transparent;
+  background: var(--ctl-solid-bg);
+  color: var(--ctl-solid-fg);
+  --focus: var(--sky-ink);
+}
+
+.chip__main {
+  min-height: 36px;
+  padding: 0 6px 0 14px;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: none;
+  font-size: var(--text-s);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.chip__remove {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  margin-right: 3px;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  opacity: 0.75;
+}
+
+.chip__remove:hover {
+  background: color-mix(in srgb, currentColor 16%, transparent);
+  opacity: 1;
+}
+
+/* ---------- Notices ---------- */
+
+.notice {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-2);
+  padding: 10px 14px;
+  border: 1px solid var(--ctl-border);
+  border-radius: var(--radius-m);
+  background: color-mix(in srgb, var(--sky-inverse) 55%, transparent);
+  color: #fff;
+  font-size: var(--text-s);
+  --focus: #fff;
+}
+
+.notice span {
+  flex: 1;
+}
+
+.notice__close {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: inherit;
+}
+
+.notice__close:hover {
+  background: rgb(255 255 255 / 0.16);
+}
+
+/* ---------- Hero: current conditions ---------- */
+
+.hero__place {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  max-width: 100%;
+}
+
+.hero__name {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 1.2rem + 2.6vw, 3rem);
+  font-weight: 600;
+  font-variation-settings: 'wdth' 90;
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+  overflow-wrap: anywhere;
+}
+
+.hero__save {
+  width: 40px;
+  height: 40px;
+}
+
+.hero__save.is-on {
+  color: var(--sky-sun);
+}
+
+.hero__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 10px;
+  color: var(--sky-ink-soft);
+}
+
+.hero__meta-sep {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.7;
+}
+
+.hero__reading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-3) var(--space-6);
+  margin-top: var(--space-3);
+}
+
+/* The one loud element on the page. */
+.hero__temp {
+  font-family: var(--font-display);
+  font-size: clamp(6.5rem, 4rem + 13vw, 13rem);
+  font-weight: 600;
+  font-variation-settings: 'wdth' 78;
+  line-height: 0.82;
+  letter-spacing: -0.04em;
+}
+
+.hero__temp-unit {
+  display: inline-block;
+  margin-left: 0.08em;
+  font-size: 0.24em;
+  font-weight: 500;
+  font-variation-settings: 'wdth' 100;
+  letter-spacing: 0;
+  vertical-align: top;
+  line-height: 1.5;
+  color: var(--sky-ink-soft);
+}
+
+.hero__condition {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding-bottom: 0.5rem;
+}
+
+.hero__condition-label {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+.hero__feels {
+  color: var(--sky-ink-soft);
+}
+
+.hero__range {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-5);
+  margin-top: var(--space-2);
+}
+
+.hero__range div {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+}
+
+.hero__range dt {
+  color: var(--sky-ink-soft);
+  font-size: var(--text-s);
+}
+
+.hero__range dd {
+  font-family: var(--font-display);
+  font-size: var(--text-l);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.hero__status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-4);
+  margin-top: var(--space-3);
+}
+
+.hero__status .button {
+  min-height: 40px;
+  padding: 0 14px;
+  font-size: var(--text-s);
+}
+
+.hero__updated {
+  color: var(--sky-ink-soft);
+  font-size: var(--text-s);
+}
+
+.hero__stale {
+  max-width: 60ch;
+  padding: 10px 14px;
+  border-left: 3px solid var(--sky-sun);
+  border-radius: var(--radius-s);
+  background: color-mix(in srgb, var(--sky-inverse) 45%, transparent);
+  color: #fff;
+  font-size: var(--text-s);
+}
+
+/* ---------- Sun arc ---------- */
+
+.sun-arc__svg {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.sun-arc__track {
+  fill: none;
+  stroke: color-mix(in srgb, var(--sky-ink) 45%, transparent);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-dasharray: 0.001 0.022;
+}
+
+.sun-arc__horizon {
+  stroke: color-mix(in srgb, var(--sky-ink) 55%, transparent);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+}
+
+@keyframes arc-draw {
+  from {
+    stroke-dashoffset: var(--progress);
+  }
+}
+
+@keyframes sun-travel {
+  from {
+    transform: rotate(0deg);
+  }
+}
+
+/* On load the sun travels from the horizon to where it is now, and the
+   brighter line is drawn behind it. Both use the same timing to stay together. */
+.sun-arc__done {
+  fill: none;
+  stroke: var(--sky-sun);
+  stroke-width: 3;
+  stroke-linecap: round;
+  animation: arc-draw 1.4s var(--ease-out) both;
+}
+
+.sun-arc__sun {
+  transform: rotate(var(--angle));
+  animation: sun-travel 1.4s var(--ease-out) both;
+}
+
+.sun-arc__halo {
+  fill: var(--sky-sun);
+  opacity: 0.28;
+}
+
+.sun-arc__disc {
+  fill: var(--sky-sun);
+}
+
+.sun-arc--night .sun-arc__track {
+  stroke: color-mix(in srgb, var(--sky-ink) 30%, transparent);
+}
+
+.sun-arc__caption {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: start;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+  font-family: var(--font-display);
+  font-weight: 600;
+}
+
+.sun-arc__time {
+  display: grid;
+  font-size: var(--text-l);
+  line-height: 1.25;
+}
+
+.sun-arc__time--end {
+  text-align: right;
+}
+
+.sun-arc__label {
+  color: var(--sky-ink-soft);
+  font-family: var(--font-body);
+  font-size: var(--text-s);
+  font-weight: 400;
+}
+
+.sun-arc__status {
+  align-self: end;
+  color: var(--sky-ink-soft);
+  font-family: var(--font-body);
+  font-size: var(--text-s);
+  font-weight: 400;
+  text-align: center;
+}
+
+.sun-arc__missing {
+  color: var(--sky-ink-soft);
+}
+
+/* ---------- Panels ---------- */
+
+.panel__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.panel__title {
+  font-family: var(--font-display);
+  font-size: var(--text-l);
+  font-weight: 650;
+  letter-spacing: -0.005em;
+}
+
+.panel__aside,
+.panel__note,
+.panel__empty {
+  color: var(--ink-2);
+  font-size: var(--text-s);
+}
+
+.panel__empty {
+  padding-block: var(--space-4);
+  font-size: var(--text-m);
+}
+
+.panel__note {
+  margin-top: var(--space-3);
+}
+
+.panel-skeleton > div {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.panel-skeleton--strip {
+  display: flex;
+  gap: var(--space-4);
+  overflow: hidden;
+}
+
+/* ---------- Hourly ---------- */
+
+.hourly {
+  --hour-w: 68px;
+  --plot-h: 64px;
+  --time-h: 22px;
+  --icon-h: 30px;
+  --row-gap: 8px;
+  position: relative;
+}
+
+.hourly__scroller {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line) transparent;
+  border-radius: var(--radius-s);
+  padding-bottom: var(--space-2);
+  /* Fade the edges to hint that the strip continues. */
+  mask-image: linear-gradient(90deg, transparent 0, #000 20px, #000 calc(100% - 20px), transparent 100%);
+}
+
+.hourly__track {
+  position: relative;
+}
+
+.hourly__list {
+  display: flex;
+}
+
+.hourly__hour {
+  display: grid;
+  grid-template-rows: var(--time-h) var(--icon-h) var(--plot-h) auto;
+  justify-items: center;
+  row-gap: var(--row-gap);
+  flex: none;
+  width: var(--hour-w);
+  scroll-snap-align: start;
+}
+
+.hourly__time {
+  color: var(--ink-2);
+  font-size: var(--text-s);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.hourly__hour:first-child .hourly__time {
+  color: var(--ink);
+}
+
+.hourly__plot {
+  position: relative;
+  width: 100%;
+  height: var(--plot-h);
+}
+
+.hourly__temp {
+  position: absolute;
+  left: 50%;
+  top: var(--y);
+  transform: translate(-50%, calc(-100% - 8px));
+  font-family: var(--font-display);
+  font-size: var(--text-m);
+  font-weight: 600;
+}
+
+.hourly__dot {
+  position: absolute;
+  left: 50%;
+  top: var(--y);
+  width: 9px;
+  height: 9px;
+  border: 2px solid var(--surface);
+  border-radius: 50%;
+  background: var(--sun);
+  transform: translate(-50%, -50%);
+}
+
+/* The line sits exactly over the plot row of every column. */
+.hourly__line {
+  position: absolute;
+  left: 0;
+  top: calc(var(--time-h) + var(--icon-h) + 2 * var(--row-gap));
+  pointer-events: none;
+}
+
+.hourly__line polyline {
+  fill: none;
+  stroke: var(--sun);
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.hourly__rain,
+.daily__rain {
+  color: var(--ink-3);
+  font-size: var(--text-s);
+}
+
+.hourly__rain.is-likely,
+.daily__rain.is-likely {
+  color: var(--rain);
+  font-weight: 700;
+}
+
+.hourly__nav {
+  position: absolute;
+  top: 50%;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: 0 4px 12px -4px rgb(8 20 44 / 0.3);
+  transform: translateY(-50%);
+  transition: opacity 0.15s ease;
+}
+
+.hourly__nav--prev {
+  left: -10px;
+}
+
+.hourly__nav--next {
+  right: -10px;
+}
+
+.hourly__nav:disabled {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Touch screens scroll by swiping, so the arrows would only be in the way. */
+@media (pointer: coarse) {
+  .hourly__nav {
+    display: none;
+  }
+}
+
+/* ---------- Daily ---------- */
+
+.daily {
+  display: grid;
+  flex: 1;
+  grid-auto-rows: 1fr;
+}
+
+.daily__row {
+  display: grid;
+  grid-template-columns: 4.5rem minmax(0, 1fr) 3.5rem minmax(150px, 1.1fr);
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 52px;
+  border-top: 1px solid var(--line);
+}
+
+.daily__row:first-child {
+  border-top: 0;
+}
+
+.daily__day {
+  display: grid;
+  line-height: 1.25;
+}
+
+.daily__weekday {
+  font-weight: 700;
+}
+
+.daily__date {
+  color: var(--ink-2);
+  font-size: var(--text-s);
+}
+
+.daily__icon {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.daily__label {
+  color: var(--ink-2);
+  font-size: var(--text-s);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.daily__rain {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.daily__temps {
+  display: grid;
+  grid-template-columns: 2.4rem minmax(0, 1fr) 2.4rem;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-display);
+  font-weight: 600;
+}
+
+.daily__low {
+  color: var(--ink-2);
+  text-align: right;
+}
+
+.daily__bar {
+  position: relative;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--track);
+}
+
+.daily__bar-fill {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--start);
+  right: calc(100% - var(--end));
+  min-width: 6px;
+  border-radius: 3px;
+  background: var(--sun);
+}
+
+@media (max-width: 460px) {
+  .daily__row {
+    grid-template-columns: 3.6rem 2rem 3.2rem minmax(0, 1fr);
+    gap: var(--space-2);
+  }
+
+  .daily__label {
+    display: none;
+  }
+}
+
+/* ---------- Condition tiles ---------- */
+
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: var(--space-5);
+}
+
+.tile {
+  position: relative;
+  padding-block: var(--space-3);
+  border-top: 1px solid var(--line);
+}
+
+.tile:nth-child(-n + 2) {
+  padding-top: 0;
+  border-top: 0;
+}
+
+.tile__label {
+  color: var(--ink-2);
+  font-size: var(--text-s);
+  font-weight: 600;
+}
+
+.tile__body {
+  display: grid;
+  gap: 2px;
+}
+
+.tile__value {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.tile__unit {
+  margin-left: 4px;
+  color: var(--ink-2);
+  font-family: var(--font-body);
+  font-size: var(--text-s);
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+.tile__note {
+  color: var(--ink-2);
+  font-size: var(--text-s);
+  line-height: 1.35;
+}
+
+.compass {
+  position: absolute;
+  top: var(--space-3);
+  right: 0;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  color: var(--accent);
+}
+
+.tile:nth-child(-n + 2) .compass {
+  top: 0;
+}
+
+.compass__n {
+  position: absolute;
+  top: -8px;
+  padding: 0 3px;
+  background: var(--surface);
+  color: var(--ink-3);
+  font-size: 0.625rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.compass__arrow {
+  transform: rotate(var(--bearing));
+  transition: transform 0.6s var(--ease-out);
+}
+
+.meter {
+  display: block;
+  height: 4px;
+  margin-top: 6px;
+  border-radius: 2px;
+  background: var(--track);
+  overflow: hidden;
+}
+
+.meter__fill {
+  display: block;
+  width: calc(var(--fraction) * 100%);
+  height: 100%;
+  border-radius: 2px;
+  background: var(--accent);
+}
+
+.meter[data-level='good'] .meter__fill { background: var(--level-good); }
+.meter[data-level='moderate'] .meter__fill { background: var(--level-moderate); }
+.meter[data-level='elevated'] .meter__fill { background: var(--level-elevated); }
+.meter[data-level='high'] .meter__fill { background: var(--level-high); }
+.meter[data-level='severe'] .meter__fill { background: var(--level-severe); }
+.meter[data-level='extreme'] .meter__fill { background: var(--level-extreme); }
+
+/* ---------- Precipitation ---------- */
+
+.precip {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.precip__headline {
+  font-weight: 600;
+}
+
+.precip__readout {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  color: var(--ink-2);
+  font-size: var(--text-s);
+}
+
+.precip__readout-value {
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 600;
+  line-height: 1;
+}
+
+.precip__readout-amount {
+  margin-left: auto;
+}
+
+.precip__plot {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+/* Two faint reference lines so low bars can be read against the full scale. */
+.precip__scale {
+  position: absolute;
+  left: 0;
+  right: 0;
+  border-top: 1px dashed var(--line);
+  color: var(--ink-3);
+  font-size: var(--text-xs);
+  line-height: 1.5;
+  text-align: right;
+  pointer-events: none;
+}
+
+.precip__scale--100 {
+  top: 0;
+}
+
+.precip__scale--50 {
+  top: 50%;
+}
+
+.precip__chart {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 84px;
+  border-bottom: 1px solid var(--line);
+  border-radius: 2px;
+}
+
+.precip__col {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  flex: 1;
+  height: 100%;
+}
+
+.precip__bar {
+  display: block;
+  width: 100%;
+  height: var(--h);
+  /* Even a 0% hour leaves a mark, so the baseline reads as data and not as a gap. */
+  min-height: 2px;
+  border-radius: 4px 4px 0 0;
+  background: var(--rain);
+  opacity: 0.45;
+  transition: opacity 0.12s ease;
+}
+
+.precip__col.is-active .precip__bar {
+  opacity: 1;
+}
+
+.precip__tick {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 0;
+  color: var(--ink-3);
+  font-size: var(--text-xs);
+  white-space: nowrap;
+}
+
+.precip__stats,
+.sunmoon__sun {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-5);
+}
+
+.precip__stats dt,
+.sunmoon__sun dt {
+  color: var(--ink-2);
+  font-size: var(--text-s);
+}
+
+.precip__stats dd,
+.sunmoon__sun dd {
+  font-family: var(--font-display);
+  font-size: var(--text-l);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Air quality ---------- */
+
+.aqi {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.aqi__headline {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.aqi__value {
+  font-family: var(--font-display);
+  font-size: 3rem;
+  font-weight: 600;
+  font-variation-settings: 'wdth' 82;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.aqi__words {
+  display: grid;
+  line-height: 1.3;
+}
+
+.aqi__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+}
+
+.aqi__swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--level);
+}
+
+.aqi__scale-name,
+.aqi__advice,
+.aqi__footnote {
+  color: var(--ink-2);
+  font-size: var(--text-s);
+}
+
+[data-level='good'] { --level: var(--level-good); }
+[data-level='moderate'] { --level: var(--level-moderate); }
+[data-level='elevated'] { --level: var(--level-elevated); }
+[data-level='high'] { --level: var(--level-high); }
+[data-level='severe'] { --level: var(--level-severe); }
+[data-level='extreme'] { --level: var(--level-extreme); }
+
+.aqi__meter {
+  position: relative;
+  height: 8px;
+  margin-block: 4px;
+  border-radius: 4px;
+  background: var(--track);
+}
+
+.aqi__tick {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(var(--at) * 100%);
+  width: 2px;
+  background: var(--surface);
+}
+
+.aqi__marker {
+  position: absolute;
+  top: 50%;
+  left: calc(var(--at) * 100%);
+  width: 16px;
+  height: 16px;
+  border: 3px solid var(--surface);
+  border-radius: 50%;
+  background: var(--level);
+  box-shadow: 0 0 0 1px var(--line);
+  transform: translate(-50%, -50%);
+}
+
+.aqi__pollutants {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-3) var(--space-4);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--line);
+}
+
+.aqi__pollutants dt {
+  color: var(--ink-2);
+  font-size: var(--text-s);
+}
+
+.aqi__pollutants abbr {
+  text-decoration: none;
+}
+
+.aqi__pollutants dd {
+  font-family: var(--font-display);
+  font-size: var(--text-l);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Sun and moon ---------- */
+
+.sunmoon {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.sunmoon__moon {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--line);
+}
+
+.moon__dark {
+  fill: var(--surface-sunk);
+}
+
+.moon__lit {
+  fill: var(--icon-moon);
+}
+
+.moon__rim {
+  fill: none;
+  stroke: var(--line);
+  stroke-width: 1.5;
+}
+
+.sunmoon__phase {
+  font-family: var(--font-display);
+  font-size: var(--text-l);
+  font-weight: 600;
+}
+
+.sunmoon__qualifier {
+  margin-left: 6px;
+  color: var(--ink-2);
+  font-family: var(--font-body);
+  font-size: var(--text-s);
+  font-weight: 500;
+}
+
+.sunmoon__detail {
+  color: var(--ink-2);
+  font-size: var(--text-s);
+}
+
+/* ---------- Errors ---------- */
+
+.error-state {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+  max-width: 60ch;
+}
+
+.error-state__icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--ctl-bg);
+}
+
+.error-state__body {
+  display: grid;
+  gap: var(--space-2);
+  justify-items: start;
+}
+
+.error-state__title {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.error-state__text {
+  opacity: 0.9;
+}
+
+.error-state__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+.error-state--compact {
+  gap: var(--space-3);
+}
+
+.error-state--compact .error-state__icon {
+  width: 40px;
+  height: 40px;
+  color: var(--ink-2);
+}
+
+.error-state--compact .error-state__title {
+  font-size: var(--text-m);
+}
+
+.error-state--compact .error-state__text {
+  color: var(--ink-2);
+  font-size: var(--text-s);
+}
+
+.error-state--compact .button {
+  min-height: 38px;
+  padding: 0 14px;
+  font-size: var(--text-s);
+}
+
+.widget-error {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border: 1px dashed var(--ctl-border);
+  border-radius: var(--radius-m);
+  font-size: var(--text-s);
+}
+
+.widget-error > div {
+  flex: 1;
+  min-width: 180px;
+}
+
+.widget-error__title {
+  font-size: var(--text-m);
+  font-weight: 700;
+}
+
+.widget-error__text {
+  opacity: 0.85;
+}
+
+/* ---------- Onboarding ---------- */
+
+.onboarding {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-5);
+  max-width: 44rem;
+  padding-block: clamp(32px, 10vh, 120px) var(--space-7);
+}
+
+.onboarding__title {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 1.4rem + 5.5vw, 5rem);
+  font-weight: 600;
+  font-variation-settings: 'wdth' 82;
+  line-height: 0.98;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+
+.onboarding__lead {
+  max-width: 34rem;
+  color: var(--sky-ink-soft);
+  font-size: var(--text-l);
+}
+
+.onboarding__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.onboarding__examples {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+  color: var(--sky-ink-soft);
+  font-size: var(--text-s);
+}
+
+.onboarding__examples ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.example {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  min-height: 36px;
+  padding: 0 14px;
+  border: 1px dashed var(--ctl-border);
+  border-radius: var(--radius-pill);
+  background: none;
+  color: var(--sky-ink);
+  font-size: var(--text-s);
+}
+
+.example:hover {
+  background: var(--ctl-bg);
+}
+
+.example__hint {
+  color: var(--sky-ink-soft);
+}
+
+.example__query {
+  font-weight: 700;
+}

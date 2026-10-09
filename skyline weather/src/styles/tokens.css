@@ -1,0 +1,121 @@
+/*
+ * Design tokens.
+ *
+ * Two layers of colour live side by side:
+ *   1. The sheet: the solid surface that holds the forecast panels. It follows
+ *      the light or dark theme (data-theme on <html>).
+ *   2. The sky: the gradient behind the header and current conditions. It
+ *      follows the weather (data-scene on .app, see scenes.css).
+ */
+
+/* Registered so the sky gradient can cross-fade between scenes. */
+@property --sky-top {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #0e4a9b;
+}
+@property --sky-bottom {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #2a72c0;
+}
+
+:root {
+  color-scheme: light;
+
+  /* Type: one characterful grotesque for numbers and headings, one quiet one for text. */
+  --font-display: 'Bricolage Grotesque Variable', 'Hanken Grotesk Variable', system-ui, sans-serif;
+  --font-body: 'Hanken Grotesk Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  --text-xs: 0.75rem;
+  --text-s: 0.8125rem;
+  --text-m: 0.9375rem;
+  --text-l: 1.125rem;
+  --text-xl: 1.5rem;
+  --text-2xl: 2rem;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+
+  --radius-s: 8px;
+  --radius-m: 14px;
+  --radius-l: 24px;
+  --radius-pill: 999px;
+
+  --page-max: 1180px;
+  --page-gutter: clamp(16px, 4vw, 40px);
+
+  --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+
+  /* Sheet, light theme */
+  --surface: #ffffff;
+  --surface-sunk: #f2f5f9;
+  --line: #dde3ec;
+  --ink: #0f1b2d;
+  --ink-2: #44546a;
+  --ink-3: #5d6c82;
+  --accent: #1657b8;
+  --accent-ink: #ffffff;
+  --track: #e4e9f0;
+  --sun: #d98708;
+  --rain: #2274cc;
+  --danger: #b3261e;
+
+  /* Severity steps for index scales. Always paired with a written label. */
+  --level-good: #2a9558;
+  --level-moderate: #b98a00;
+  --level-elevated: #d8730f;
+  --level-high: #cf3f2e;
+  --level-severe: #8a3ea6;
+  --level-extreme: #7a1f3d;
+
+  /* Weather icons on the sheet */
+  --icon-sun: #e8950c;
+  --icon-moon: #7f8ac4;
+  --icon-cloud: #9aabc2;
+  --icon-cloud-back: #c3cedd;
+  --icon-rain: #2b7cd3;
+  --icon-snow: #7fa8d8;
+  --icon-bolt: #e8950c;
+
+  --shadow-pop: 0 18px 40px -12px rgb(8 20 44 / 0.35), 0 2px 6px rgb(8 20 44 / 0.12);
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  --surface: #121c2e;
+  --surface-sunk: #0c1423;
+  --line: #24324a;
+  --ink: #e9eef6;
+  --ink-2: #aab7c9;
+  --ink-3: #8f9db2;
+  --accent: #8ab8ff;
+  --accent-ink: #08172e;
+  --track: #24324a;
+  --sun: #f6b23c;
+  --rain: #5aa4f0;
+  --danger: #ffb4ab;
+
+  --level-good: #4cc07f;
+  --level-moderate: #e3b72a;
+  --level-elevated: #f39a3d;
+  --level-high: #f2705f;
+  --level-severe: #c07adb;
+  --level-extreme: #e0668d;
+
+  --icon-sun: #f6b23c;
+  --icon-moon: #c9d1f5;
+  --icon-cloud: #c3cedd;
+  --icon-cloud-back: #7b8aa3;
+  --icon-rain: #5aa4f0;
+  --icon-snow: #cfe0f5;
+  --icon-bolt: #f6b23c;
+
+  --shadow-pop: 0 18px 40px -12px rgb(0 0 0 / 0.7), 0 2px 6px rgb(0 0 0 / 0.4);
+}

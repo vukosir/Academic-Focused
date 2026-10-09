@@ -1,0 +1,298 @@
+/* Page structure: top bar, favorites, notices, hero, sheet, footer. */
+
+.app {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  color: var(--sky-ink);
+}
+
+/* Everything except the backdrop sits above it and shares one page width. */
+.topbar,
+.favorites,
+.notices,
+main,
+.footer {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: calc(var(--page-max) + 2 * var(--page-gutter));
+  margin-inline: auto;
+  padding-inline: var(--page-gutter);
+}
+
+main {
+  flex: 1;
+  outline: none;
+}
+
+/* ---------- Top bar ---------- */
+
+.topbar {
+  /* Above the favorites row so the search popup can overlap it. */
+  z-index: 20;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-areas: 'brand search settings';
+  align-items: start;
+  gap: var(--space-4);
+  padding-block: var(--space-4);
+}
+
+.brand {
+  grid-area: brand;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: 46px;
+  border-radius: var(--radius-s);
+  color: var(--sky-ink);
+  text-decoration: none;
+  --sun: var(--sky-sun);
+}
+
+.brand__name {
+  font-family: var(--font-display);
+  font-size: 1.3125rem;
+  font-weight: 700;
+  font-variation-settings: 'wdth' 88;
+  letter-spacing: -0.01em;
+}
+
+.topbar__search {
+  grid-area: search;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  width: 100%;
+  max-width: 600px;
+  justify-self: center;
+}
+
+.topbar__settings {
+  grid-area: settings;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: 46px;
+}
+
+@media (max-width: 860px) {
+  .topbar {
+    grid-template-columns: auto 1fr;
+    grid-template-areas:
+      'brand settings'
+      'search search';
+    row-gap: var(--space-3);
+  }
+
+  .topbar__settings {
+    justify-self: end;
+  }
+
+  .topbar__search {
+    max-width: none;
+  }
+}
+
+@media (max-width: 380px) {
+  .brand__name {
+    display: none;
+  }
+}
+
+/* ---------- Favorites ---------- */
+
+.favorites {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding-bottom: var(--space-2);
+}
+
+.favorites__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: none;
+  color: var(--sky-ink-soft);
+  font-size: var(--text-s);
+  font-weight: 600;
+}
+
+.favorites__list {
+  display: flex;
+  gap: var(--space-2);
+  min-width: 0;
+  /* Room for focus rings, which overflow: auto would otherwise clip. */
+  padding: 4px;
+  margin: -4px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.favorites__list::-webkit-scrollbar {
+  display: none;
+}
+
+/* ---------- Notices ---------- */
+
+.notices {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.notices:empty {
+  display: none;
+}
+
+/* ---------- Hero ---------- */
+
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(260px, 400px);
+  align-items: end;
+  gap: var(--space-6) var(--space-7);
+  padding-block: clamp(20px, 5vh, 56px) clamp(28px, 6vh, 64px);
+}
+
+.hero__main {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.hero__arc {
+  min-width: 0;
+}
+
+.hero--message {
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+  justify-items: start;
+  gap: var(--space-5);
+  min-height: 46vh;
+  align-content: center;
+}
+
+.hero--loading .hero__main {
+  gap: var(--space-4);
+}
+
+@media (max-width: 820px) {
+  .hero {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-6);
+  }
+
+  .hero__arc {
+    max-width: 420px;
+  }
+}
+
+/* ---------- Sheet ---------- */
+
+.sheet {
+  --focus: var(--accent);
+  --ctl-bg: var(--surface-sunk);
+  --ctl-bg-hover: var(--line);
+  --ctl-border: var(--line);
+  --ctl-fg: var(--ink);
+  --ctl-solid-bg: var(--accent);
+  --ctl-solid-fg: var(--accent-ink);
+  --skeleton-a: var(--surface-sunk);
+  --skeleton-b: var(--line);
+
+  /* The line colour shows through 1px gaps to draw the rules between panels. */
+  background: var(--line);
+  border-radius: var(--radius-l);
+  overflow: hidden;
+  color: var(--ink);
+  box-shadow: 0 30px 60px -30px rgb(4 12 30 / 0.55);
+}
+
+.sheet__grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 1px;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  grid-column: span 2;
+  min-width: 0;
+  padding: var(--space-5);
+  background: var(--surface);
+}
+
+.panel--wide {
+  grid-column: 1 / -1;
+}
+
+.panel--half {
+  grid-column: span 3;
+}
+
+@media (max-width: 1020px) {
+  .panel,
+  .panel--half {
+    grid-column: span 3;
+  }
+
+  .panel--wide,
+  .panel--half,
+  .panel:last-child {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 680px) {
+  .panel,
+  .panel--wide,
+  .panel--half {
+    grid-column: 1 / -1;
+    padding: var(--space-4);
+  }
+
+  .sheet {
+    border-radius: 18px;
+    margin-inline: calc(var(--page-gutter) * -0.5);
+  }
+}
+
+/* ---------- Footer ---------- */
+
+.footer {
+  padding-block: var(--space-5) var(--space-6);
+  color: var(--sky-ink-soft);
+  font-size: var(--text-s);
+}
+
+.footer a {
+  color: var(--sky-ink);
+  text-underline-offset: 3px;
+}
+
+/* ---------- Crash screen ---------- */
+
+.app--crashed {
+  background: linear-gradient(180deg, var(--sky-top), var(--sky-bottom));
+}
+
+.crash {
+  display: grid;
+  gap: var(--space-4);
+  align-content: center;
+  justify-items: start;
+  max-width: 560px;
+  min-height: 100dvh;
+}
+
+.crash h1 {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  line-height: 1.1;
+}
