@@ -2,24 +2,25 @@
 
 A weather dashboard that shows current conditions, the next 24 hours, a 7-day forecast, air quality, precipitation chances, and sun and moon information for any place in the world. Built with React, TypeScript and Vite. All data is live from the Open-Meteo API.
 
-## Put it online (no terminal needed)
+**Live app:** https://vukosir.github.io/Academic-Focused/
 
-The project includes a GitHub Actions workflow that builds the app and publishes it to GitHub Pages. Once it is set up, the app is public at `https://<your-username>.github.io/<repository-name>/` and you never have to start a server.
+## How it is published
 
-1. On github.com, create a new **public** repository. Leave "Add a README" unticked.
-2. On the empty repository page, choose "uploading an existing file".
-3. Unzip the project, open the folder, select everything inside it (including the `.github` folder) and drag it onto the upload page. Do not upload a `node_modules` or `dist` folder if you have one.
-4. Choose "Commit changes".
-5. Go to Settings, then Pages. Under "Build and deployment", set Source to "GitHub Actions".
-6. Open the Actions tab. If no run has started, select "Deploy to GitHub Pages" and choose "Run workflow". When the run turns green, the link to the live site is shown on the run page and under Settings, Pages.
+The app is public and nobody has to start a server for it. GitHub builds it and hosts it on GitHub Pages.
 
-Every later change to the `main` branch is tested, built and published automatically.
+- The code lives in the `skyline weather` folder of the `Academic-Focused` repository.
+- The workflow file `.github/workflows/deploy-skyline-weather.yml`, at the top of the repository, installs the dependencies, type-checks and builds the app, then publishes the result to GitHub Pages.
+- The workflow runs by itself whenever something inside `skyline weather` changes on the `main` branch. A change is usually live within two minutes.
+- It can also be started by hand: open the Actions tab, select "Deploy Skyline Weather", then "Run workflow".
+- In the repository settings, Pages is set to use "GitHub Actions" as its source.
 
 The app calls public APIs straight from the browser and needs no API key, so nothing secret is stored in the repository.
 
 ## Run it on your own computer (optional)
 
-You need Node.js 22.12 or newer (Node 24 also works). Check your version with `node -v`.
+This is only needed for changing the code. You need Node.js 22.12 or newer (Node 24 also works). Check your version with `node -v`.
+
+Open a terminal in the `skyline weather` folder and run:
 
 ```bash
 npm install
@@ -28,7 +29,11 @@ npm run dev
 
 Then open http://localhost:5173.
 
+Do not upload the `node_modules` or `dist` folders to GitHub. They are created on your computer by the commands above, and GitHub makes its own copies when it builds the app.
+
 ## Scripts
+
+Run these in the `skyline weather` folder.
 
 | Command | What it does |
 | --- | --- |
@@ -42,13 +47,17 @@ Then open http://localhost:5173.
 
 ## Configuration and API key
 
-Configuration comes from environment variables, which Vite reads from `.env` files. Nothing is hardcoded.
+The app works with no configuration. Every setting below is optional and is read from environment variables when the app is built. Nothing is hardcoded.
 
-1. Copy `.env.example` to `.env.local`.
-2. Change the values you need.
+To change a setting on your own computer:
+
+1. Create a file named `.env.local` in the `skyline weather` folder.
+2. Add one line per setting, for example `VITE_DEFAULT_LOCATION_NAME=Cape Town`.
 3. Restart `npm run dev`.
 
-`.env.local` is ignored by git, so it never ends up in the repository.
+Keep `.env.local` on your computer and do not upload it to GitHub.
+
+To change a setting on the live app, add it under an `env:` block on the "Build the app" step in `.github/workflows/deploy-skyline-weather.yml`.
 
 | Variable | Default | Purpose |
 | --- | --- | --- |
@@ -158,6 +167,8 @@ src/
 npm test
 ```
 
+The tests run on your own computer. The publishing workflow type-checks and builds the app but does not run the tests, so run them before uploading a change to the code.
+
 The suite uses Vitest and React Testing Library. It covers:
 
 - `http.ts`: success, network failure, offline, timeout, 429, 5xx, 400, 404, invalid JSON, cancellation, retries.
@@ -179,7 +190,7 @@ The files in `src/test/fixtures.ts` are real responses recorded from the Open-Me
 
 ## Other hosts
 
-`npm run build` produces static files in `dist/`. That folder can be uploaded to any static host such as Netlify, Vercel or Cloudflare Pages. Asset paths are relative, so the site works at a domain root or in a sub-folder. Geolocation only works on `https` pages and on `localhost`.
+`npm run build` produces static files in `dist/`. That folder can also be uploaded to any other static host such as Netlify, Vercel or Cloudflare Pages. Asset paths are relative, so the site works at a domain root or in a sub-folder. Geolocation only works on `https` pages and on `localhost`.
 
 ## Browser support
 
