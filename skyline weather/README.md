@@ -194,4 +194,4 @@ The files in `src/test/fixtures.ts` are real responses recorded from the Open-Me
 
 ## Browser support
 
-Current versions of Chrome, Edge, Firefox and Safari.
+Current versions of Chrome, Edge, Microsoft Edge and Safari.
