@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/off_white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="16dp"
+            app:strokeColor="@color/border"
+            app:strokeWidth="1dp"
+            app:cardElevation="0dp"
+            app:cardBackgroundColor="@color/white">
+
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="20dp">
+
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="MONTHLY BUDGET GOAL" style="@style/SectionTitle" android:layout_marginBottom="16dp"/>
+
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_marginBottom="12dp">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:layout_marginEnd="8dp">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Min (R)" android:textSize="11sp" android:textColor="@color/ink_3" android:layout_marginBottom="4dp"/>
+                        <TextView android:id="@+id/tvOverallMin" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Not set" android:textSize="18sp" android:textColor="@color/ink" android:fontFamily="serif"/>
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Max (R)" android:textSize="11sp" android:textColor="@color/ink_3" android:layout_marginBottom="4dp"/>
+                        <TextView android:id="@+id/tvOverallMax" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Not set" android:textSize="18sp" android:textColor="@color/ink" android:fontFamily="serif"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <ProgressBar
+                    android:id="@+id/progressOverall"
+                    style="@android:style/Widget.ProgressBar.Horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="6dp"
+                    android:layout_marginBottom="8dp"
+                    android:max="100"
+                    android:progress="0"
+                    android:progressTint="@color/ink"
+                    android:progressBackgroundTint="@color/surface"/>
+
+                <TextView
+                    android:id="@+id/tvProgressLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:textColor="@color/ink_3"
+                    android:layout_marginBottom="12dp"
+                    android:text="Set budget goals to track progress" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnSetBudget"
+                    style="@style/BtnSolid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Set Budget Goals" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="16dp"
+            app:strokeColor="@color/border"
+            app:strokeWidth="1dp"
+            app:cardElevation="0dp"
+            app:cardBackgroundColor="@color/white">
+
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="20dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="CATEGORY BUDGETS" style="@style/SectionTitle" android:layout_marginBottom="14dp"/>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerCatBudgets"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+    </LinearLayout>
+</ScrollView>

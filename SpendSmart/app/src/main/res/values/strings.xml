@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SpendSmart</string>
+    <string name="demo_mode_on">Demo mode is ON — showing sample data only</string>
+    <string name="demo_mode_off">Showing your real data</string>
+</resources>
