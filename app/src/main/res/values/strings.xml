@@ -1,0 +1,9 @@
+<resources>
+    <!-- The product name is always lowercase. -->
+    <string name="app_name">studytime</string>
+    <string name="tagline">your calm study companion</string>
+    <string name="timer_channel_name">Focus timer</string>
+    <string name="timer_channel_description">Tells you when a focus session or a break ends.</string>
+    <string name="reminder_channel_name">Study reminders</string>
+    <string name="reminder_channel_description">Reminders for planned sessions, deadlines, exams and revision.</string>
+</resources>

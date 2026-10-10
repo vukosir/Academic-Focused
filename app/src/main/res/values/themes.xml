@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Window theme only. The app itself is styled in ui/theme (Jetpack Compose). -->
+    <style name="Theme.Studytime" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:windowBackground">@color/studytime_cream</item>
+    </style>
+</resources>
